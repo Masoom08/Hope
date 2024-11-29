@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "369932126614",
+    "project_id": "masoom-singh",
+    "storage_bucket": "masoom-singh.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:369932126614:android:7c66574993a0008337f5b7",
+        "android_client_info": {
+          "package_name": "st.masoom.hope"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAt6BuPn_SgTWY5QDlFT2qlXCwzQ0B9rxo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
