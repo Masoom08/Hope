@@ -18,6 +18,10 @@ import androidx.navigation.compose.rememberNavController
 import st.masoom.hope.Swipe.Top
 import st.masoom.hope.ui.theme.HopeTheme
 
+
+const val APP_ID = "62c7453f054441158ea1000ca87d948b" ;
+
+
 class MainActivity : ComponentActivity() {
 
     private val authViewModel: AuthViewModel by viewModels()
