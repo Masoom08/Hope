@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import st.masoom.hope.Job.presentation.Page.ApplicationScreen
 import st.masoom.hope.Job.presentation.Page.HomeScreen
-import st.masoom.hope.Job.presentation.Page.JobScreen
+import st.masoom.hope.Job.presentation.Page.Job.JobScreen
 import st.masoom.hope.Job.presentation.Page.Profile.ProfileScreen
 import st.masoom.hope.Job.presentation.registration.RegistrationScreen
 import st.masoom.hope.Job.presentation.sign_in.GoogleAuthUiClient
@@ -73,7 +73,7 @@ fun NavGraph(
             )
         }
         composable("home") { HomeScreen(navController) }
-        composable("jobs") { JobScreen(navController) }
+        //composable("jobs") { JobScreen(navController) }
         composable("applications") { ApplicationScreen(navController) }
 
         composable("profile") {
