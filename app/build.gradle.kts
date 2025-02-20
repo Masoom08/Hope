@@ -83,6 +83,9 @@ dependencies {
     implementation("io.coil-kt:coil-compose:2.5.0")
 
     implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
+
+    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
+    implementation("androidx.activity:activity-compose:1.8.2") // Required for file picking
     /*
     implementation("com.google.firebase:firebase-firestore-ktx:24.10.0"){
         exclude(group = "com.google.firebase", module = "firebase-common")

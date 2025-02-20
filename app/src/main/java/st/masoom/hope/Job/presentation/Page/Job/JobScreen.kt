@@ -82,6 +82,9 @@ fun JobScreen(navController: NavController, userId: String) {
 @Composable
 fun JobCard(job: Job, isEmployer: Boolean, userId: String, firestore: FirebaseFirestore) {
     val context = LocalContext.current
+    var showDialog by remember { mutableStateOf(false) }
+    var resume by remember { mutableStateOf("") }
+
     Card(
         colors = CardDefaults.cardColors(containerColor = Color(0xFFF8FCFF)),
         modifier = Modifier.fillMaxWidth().padding(8.dp),
@@ -96,8 +99,8 @@ fun JobCard(job: Job, isEmployer: Boolean, userId: String, firestore: FirebaseFi
             if (!isEmployer) {
                 Spacer(modifier = Modifier.height(8.dp))
                 Button(
-                    onClick = {
-                        applyForJob(job.jobId, userId, firestore, context)
+                    onClick = {showDialog = true
+                        //applyForJob(job.jobId, userId, firestore, context)
                     },
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0xFF3498DB), // Sky Blue
@@ -110,14 +113,27 @@ fun JobCard(job: Job, isEmployer: Boolean, userId: String, firestore: FirebaseFi
             }
         }
     }
+    // Show ApplyJobDialog when showDialog is true
+    if (showDialog) {
+        ApplyJobDialog(job = job, userId = userId, firestore = firestore, onDismiss = { showDialog = false })
+    }
 }
 
-fun applyForJob(jobId: String, userId: String, firestore: FirebaseFirestore, context: android.content.Context) {
-    val jobRef = firestore.collection("jobs").document(jobId)
+fun applyForJob(job: Job, userId: String, resume: String, firestore: FirebaseFirestore, context: android.content.Context) {
+    val applicationId = firestore.collection("applications").document().id // Generate unique ID
+    val application = mapOf(
+        "applicationId" to applicationId,
+        "jobId" to job.jobId,
+        "jobSeekerId" to userId,
+        "employerId" to job.employerId,
+        "status" to "Pending",
+        "resume" to resume
+    )
 
-    jobRef.update("applicants", FieldValue.arrayUnion(userId))
+    firestore.collection("applications").document(applicationId)
+        .set(application)
         .addOnSuccessListener {
-            Toast.makeText(context, "Applied Successfully!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Application Submitted!", Toast.LENGTH_LONG).show()
         }
         .addOnFailureListener { e ->
             Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_LONG).show()

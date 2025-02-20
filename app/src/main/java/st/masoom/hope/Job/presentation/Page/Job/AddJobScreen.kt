@@ -2,10 +2,12 @@ package st.masoom.hope.Job.presentation.Page.Job
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -45,6 +47,8 @@ fun AddJobScreen(navController: NavController) {
                 onClick = {
                     addJobToFirestore(title, description, salary, location, employerId, firestore, context, navController)
                 },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF3498DB)), // Your theme color
+                shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Post Job")
