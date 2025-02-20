@@ -12,9 +12,8 @@ import kotlin.getValue
 import androidx.activity.viewModels
 
 
-/*
 @Composable
-fun MyApp() {
+fun MyApp(authViewModel: AuthViewModel) {
     val navController = rememberNavController()
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = currentBackStackEntry?.destination?.route
@@ -25,11 +24,9 @@ fun MyApp() {
             if (currentRoute =="home"){
                 Top(navController=navController)
             }
-                 },
+        },
         bottomBar = { /*BottomNavigationBar(navController = navController)*/ }
     ) { innerPadding ->
         Navigation(navController = navController, modifier = Modifier.padding(innerPadding),authViewModel =authViewModel)
     }
 }
-
- */
