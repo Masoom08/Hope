@@ -67,16 +67,11 @@ fun ProfileScreen(
             )
 
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-
                 Spacer(modifier = Modifier.height(24.dp))
-
-                val profileImage = userData?.profilePictureUrl
-                    ?: FirebaseAuth.getInstance().currentUser?.photoUrl.toString()
+                val profileImage = userData?.profilePictureUrl ?: FirebaseAuth.getInstance().currentUser?.photoUrl.toString()
 
                 AsyncImage(
                     model = profileImage.ifEmpty { "https://via.placeholder.com/150" }, // Placeholder if no image
@@ -95,18 +90,12 @@ fun ProfileScreen(
                     verticalArrangement = Arrangement.Center
                 ) {
                     ProfileTextItem("Name", "${userMap?.get("firstName") ?: "Guest"} ${userMap?.get("lastName") ?: ""}")
-                    ProfileTextItem("Email", "Not Available")
-                    ProfileTextItem("Job Role", "Not Specified")
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-
+                    ProfileTextItem("Email", userMap?.get("email") as? String ?: "Not Available")
+                    ProfileTextItem("Job Role", userMap?.get("role") as? String ?: "Not Specified")
                 }
                 // Edit Profile Button
                 IconButton (onClick = { isEditingProfile = true }) {
                     Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Profile")
-                    Spacer(modifier = Modifier.width(8.dp))
-
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -145,12 +134,13 @@ fun ProfileTextItem(label: String, value: String) {
         Text(text = value, fontSize = 18.sp, fontWeight = FontWeight.Medium)
     }
 }
-// Function to update user data in Firestore
+
 fun updateUserProfile(userId: String, updatedData: Map<String, Any>) {
     val db = FirebaseFirestore.getInstance()
     db.collection("users").document(userId)
-        .update(updatedData)
+        .set(updatedData) // Use 'set' instead of 'update' to ensure all fields are written
         .addOnSuccessListener {
-            println("Profile updated successfully!")
-        }
+            println("Profile updated successfully!") }
+        .addOnFailureListener { e ->
+            println("Profile update failed: ${e.message}") }
 }

@@ -29,6 +29,7 @@ fun EditProfileScreen(
 ) {
     var firstName by remember { mutableStateOf(TextFieldValue(userProfile?.get("firstName") as? String ?: "")) }
     var lastName by remember { mutableStateOf(TextFieldValue(userProfile?.get("lastName") as? String ?: "")) }
+    var email by remember { mutableStateOf(TextFieldValue(userProfile?.get("email") as? String ?: "")) }
     var jobRole by remember { mutableStateOf(TextFieldValue(userProfile?.get("role") as? String ?: "")) }
 
     Column(
@@ -48,6 +49,9 @@ fun EditProfileScreen(
         TextField(value = lastName, onValueChange = { lastName = it }, label = { Text("Last Name") })
         Spacer(modifier = Modifier.height(8.dp))
 
+        TextField(value = email, onValueChange = { email = it }, label = { Text("Email") }, enabled = false) // Email should be non-editable
+        Spacer(modifier = Modifier.height(8.dp))
+
         TextField(value = jobRole, onValueChange = { jobRole = it }, label = { Text("Job Role") })
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -58,6 +62,7 @@ fun EditProfileScreen(
             val updatedProfile = mapOf(
                 "firstName" to firstName.text,
                 "lastName" to lastName.text,
+                "email" to email.text,
                 "role" to jobRole.text
             )
             onProfileUpdated(updatedProfile)  // Pass updated data
