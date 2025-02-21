@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,14 +52,24 @@ fun ProfileScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding()
-                .background(Color.White)
+                .background(Color.White),
+            horizontalAlignment = Alignment.Start
         ) {
             Spacer(modifier = Modifier.height(24.dp))
+            Text(
+                text = "My Profile",
+                style = TextStyle(
+                    color = Color.Black,
+                    fontSize = 24.sp,
+                    fontFamily = FontFamily.Serif,
+                    fontWeight = FontWeight.Black
+                )
+            )
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top= 70.dp),
+                    .padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
 
@@ -75,7 +87,7 @@ fun ProfileScreen(
                     contentScale = ContentScale.Crop
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp).padding(8.dp))
 
                 // Profile Info
                 Column(
@@ -88,12 +100,13 @@ fun ProfileScreen(
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    // Edit Profile Button
-                    Button(onClick = { isEditingProfile = true }) {
-                        Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Profile")
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Text(text = "Edit Profile")
-                    }
+
+                }
+                // Edit Profile Button
+                IconButton (onClick = { isEditingProfile = true }) {
+                    Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Profile")
+                    Spacer(modifier = Modifier.width(8.dp))
+
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
@@ -103,23 +116,20 @@ fun ProfileScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                    Button(onClick = { navController.navigate("home") }) {
-                        Text(text = "Home")
-                    }
 
                 Button(
-                        onClick = {
-                            onSignOut()
-                            navController.navigate("login") {
-                                popUpTo("home") { inclusive = true }
-                            }
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
-                    ) {
-                        Text(text = "Sign Out", color = Color.White)
-                    }
+                    onClick = {
+                        onSignOut()
+                        navController.navigate("login") {
+                            popUpTo("home") { inclusive = true }
+                        }
+                    },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
+                ) {
+                    Text(text = "Sign Out", color = Color.White)
                 }
             }
+        }
     }
 }
 

@@ -17,11 +17,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.tasks.await
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,7 +57,7 @@ fun JobScreen(navController: NavController, userId: String) {
         modifier = Modifier.fillMaxSize().background(Color.White),
         topBar = {
             TopAppBar(
-                title = { Text("Jobs") },
+                title = { Text("Jobs",fontSize = 22.sp, fontWeight = FontWeight.Bold) },
                 actions = {
                     if (isEmployer) {
                         IconButton(onClick = { navController.navigate("add_job") }) {

@@ -28,7 +28,7 @@ import kotlinx.coroutines.tasks.await
 import st.masoom.hope.Job.Navigation.BottomNavigationBar
 import st.masoom.hope.Job.Navigation.TopBar
 import st.masoom.hope.Job.presentation.Page.ApplicationScreen
-import st.masoom.hope.Job.presentation.Page.HomeScreen
+import st.masoom.hope.Job.presentation.Page.Home.HomeScreen
 import st.masoom.hope.Job.presentation.Page.Job.AddJobScreen
 import st.masoom.hope.Job.presentation.Page.Job.JobScreen
 import st.masoom.hope.Job.presentation.Page.Profile.ProfileScreen
@@ -171,7 +171,10 @@ class MainActivity : ComponentActivity() {
                             composable("add_job") {
                                 AddJobScreen(navController)
                             }
-                            composable("applications") { ApplicationScreen(navController) }
+                            composable("applications") {
+                                val userId = googleAuthUiClient.getSignedInUser()?.userId ?: ""
+                                ApplicationScreen(navController, userId)
+                            }
 
                             composable("profile") {
                                 val signedInUser = googleAuthUiClient.getSignedInUser()
