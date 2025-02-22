@@ -55,6 +55,7 @@ dependencies {
     implementation(libs.play.services.fido)
     implementation(libs.androidx.espresso.core)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.messaging)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

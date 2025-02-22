@@ -119,24 +119,3 @@ fun JobCard(job: Job, isEmployer: Boolean, userId: String, firestore: FirebaseFi
         ApplyJobDialog(job = job, userId = userId, firestore = firestore, onDismiss = { showDialog = false })
     }
 }
-
-fun applyForJob(job: Job, userId: String, resume: String, firestore: FirebaseFirestore, context: android.content.Context) {
-    val applicationId = firestore.collection("applications").document().id // Generate unique ID
-    val application = mapOf(
-        "applicationId" to applicationId,
-        "jobId" to job.jobId,
-        "jobSeekerId" to userId,
-        "employerId" to job.employerId,
-        "status" to "Pending",
-        "resume" to resume
-    )
-
-    firestore.collection("applications").document(applicationId)
-        .set(application)
-        .addOnSuccessListener {
-            Toast.makeText(context, "Application Submitted!", Toast.LENGTH_LONG).show()
-        }
-        .addOnFailureListener { e ->
-            Toast.makeText(context, "Error: ${e.message}", Toast.LENGTH_LONG).show()
-        }
-}

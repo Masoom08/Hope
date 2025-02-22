@@ -40,8 +40,7 @@ import java.io.ByteArrayOutputStream
 fun RegistrationScreen(
     navController: NavController,
     userData: UserData?,
-    onRegistrationComplete: () -> Unit,
-    viewModel: RegistrationViewModel = viewModel()
+    onRegistrationComplete: () -> Unit
 ) {
     val context = LocalContext.current
     var firstName by remember { mutableStateOf("") }
