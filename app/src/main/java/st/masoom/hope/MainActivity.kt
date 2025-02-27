@@ -1,6 +1,9 @@
 package st.masoom.hope
 
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -14,6 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -23,6 +27,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import st.masoom.hope.Job.Navigation.BottomNavigationBar
@@ -38,6 +43,7 @@ import st.masoom.hope.Job.presentation.sign_in.GoogleAuthUiClient
 import st.masoom.hope.Job.presentation.sign_in.SignInScreen
 import st.masoom.hope.Job.presentation.sign_in.SignInViewModel
 import st.masoom.hope.ui.theme.HopeTheme
+import android.Manifest
 
 
 class MainActivity : ComponentActivity() {
@@ -53,6 +59,31 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
+
+        //val firestore = FirebaseFirestore.getInstance()
+        //firestore.useEmulator("10.0.2.2", 8080)
+
+        // Request Notification Permission (Android 13+)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val requestPermissionLauncher =
+                registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+                    if (isGranted) {
+                        Log.d("NotificationPermission", "Permission granted")
+                    } else {
+                        Log.w("NotificationPermission", "Permission denied")
+                    }
+                }
+
+            if (ContextCompat.checkSelfPermission(
+                    this, Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+
+        fetchAndStoreFCMToken()
+
 
         setContent {
             HopeTheme {
@@ -202,4 +233,28 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+    private fun fetchAndStoreFCMToken() {
+        FirebaseMessaging.getInstance().token
+            .addOnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("FCM", "Fetching FCM registration token failed", task.exception)
+                    return@addOnCompleteListener
+                }
+                val token = task.result
+                Log.d("FCM", "FCM Token: $token")
+
+                // Store the token only if a user is signed in
+                val userId = googleAuthUiClient.getSignedInUser()?.userId
+                if (userId != null) {
+                    val db = FirebaseFirestore.getInstance()
+                    db.collection("users").document(userId)
+                        .update("fcmToken", token)
+                        .addOnSuccessListener { Log.d("FCM", "Token successfully saved to Firestore") }
+                        .addOnFailureListener { e -> Log.e("FCM", "Error saving token", e) }
+                } else {
+                    Log.w("FCM", "User is not signed in, skipping token save.")
+                }
+            }
+    }
 }
+

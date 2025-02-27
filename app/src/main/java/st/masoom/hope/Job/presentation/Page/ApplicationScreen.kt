@@ -47,14 +47,15 @@ fun ApplicationScreen(navController: NavController, userId: String) {
             }
         }
     }
-    Scaffold(
-        modifier = Modifier.fillMaxSize(),
-        topBar = {
-            TopAppBar(title = { Text("Your Applications", fontSize = 22.sp, fontWeight = FontWeight.Bold) })
-        }
-    ) { paddingValues ->
+    Column(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+        Text(
+            text = "Your Application",
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
         LazyColumn(
-            modifier = Modifier.fillMaxSize().padding(paddingValues)
+            modifier = Modifier.fillMaxSize().padding()
         ) {
             items(applicationsList) { application ->  // Correct usage
                 ApplicationCard(application, isEmployer, firestore)
@@ -76,7 +77,7 @@ fun ApplicationCard(application: Application, isEmployer: Boolean, firestore: Fi
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = "Job ID: ${application.jobId}", style = MaterialTheme.typography.bodyLarge)
-            Text(text = "Status: $status", color = Color.Gray)
+            Text(text = "Status: $status", color = Color.Gray, fontWeight = FontWeight.Bold)
 
             // Clickable Resume Link
             if (application.resumeUrl.isNotEmpty()) {
@@ -93,7 +94,8 @@ fun ApplicationCard(application: Application, isEmployer: Boolean, firestore: Fi
                 )
             }
 
-            if (isEmployer) {
+            // Show buttons only if status is still "Pending"
+            if (isEmployer && status == "Pending") {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceEvenly
@@ -126,6 +128,15 @@ fun ApplicationCard(application: Application, isEmployer: Boolean, firestore: Fi
                         Text("❌ Reject", fontWeight = FontWeight.Bold)
                     }
                 }
+            } else {
+                // Display final status once decision is made
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = if (status == "Accepted") "✅ Application Accepted" else "❌ Application Rejected",
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = if (status == "Accepted") Color(0xFF2ECC71) else Color(0xFFE74C3C)
+                )
             }
         }
     }

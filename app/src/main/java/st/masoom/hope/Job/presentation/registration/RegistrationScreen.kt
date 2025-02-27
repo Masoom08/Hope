@@ -148,7 +148,7 @@ fun RegistrationScreen(
                         "firstName" to firstName,
                         "lastName" to lastName,
                         "email" to email,
-                        "role" to role,
+                        "role" to role.ifEmpty { "Job Seeker" },
                         "profilePicBase64" to profilePicBase64
                     )
 

@@ -9,6 +9,7 @@ data class Job(
     val description: String = "",
     val salary: String = "",
     val location: String = "",
+    val type: String = "",
     val employerId: String = "",
     @ServerTimestamp val createdAt: Date? = null,
     val applicants: List<String> = emptyList()

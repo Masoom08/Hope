@@ -48,33 +48,31 @@ fun ProfileScreen(
             }
         )
     } else {
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding()
                 .background(Color.White),
-            horizontalAlignment = Alignment.Start
+            contentAlignment = Alignment.TopEnd
         ) {
-            Spacer(modifier = Modifier.height(24.dp))
-            Text(
-                text = "My Profile",
-                style = TextStyle(
-                    color = Color.Black,
-                    fontSize = 24.sp,
-                    fontFamily = FontFamily.Serif,
-                    fontWeight = FontWeight.Black
-                )
-            )
-
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically
+            IconButton(
+                onClick = { isEditingProfile = true },
+                modifier = Modifier.padding(16.dp)
             ) {
-                Spacer(modifier = Modifier.height(24.dp))
-                val profileImage = userData?.profilePictureUrl ?: FirebaseAuth.getInstance().currentUser?.photoUrl.toString()
+                Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Profile")
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.height(32.dp))
+                val profileImage = userMap?.get("profilePictureUrl") as? String
+                    ?: FirebaseAuth.getInstance().currentUser?.photoUrl.toString()
 
                 AsyncImage(
-                    model = profileImage.ifEmpty { "https://via.placeholder.com/150" }, // Placeholder if no image
+                    model = profileImage.ifEmpty { "https://via.placeholder.com/150" },
                     contentDescription = "Profile Picture",
                     modifier = Modifier
                         .size(120.dp)
@@ -82,30 +80,12 @@ fun ProfileScreen(
                     contentScale = ContentScale.Crop
                 )
 
-                Spacer(modifier = Modifier.height(16.dp).padding(8.dp))
+                Spacer(modifier = Modifier.height(16.dp))
+                ProfileTextItem("Name", "${userMap?.get("firstName") ?: "Guest"} ${userMap?.get("lastName") ?: ""}")
+                ProfileTextItem("Email", userMap?.get("email") as? String ?: "Not Available")
+                ProfileTextItem("Job Role", userMap?.get("role") as? String ?: "Not Specified")
 
-                // Profile Info
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    ProfileTextItem("Name", "${userMap?.get("firstName") ?: "Guest"} ${userMap?.get("lastName") ?: ""}")
-                    ProfileTextItem("Email", userMap?.get("email") as? String ?: "Not Available")
-                    ProfileTextItem("Job Role", userMap?.get("role") as? String ?: "Not Specified")
-                }
-                // Edit Profile Button
-                IconButton (onClick = { isEditingProfile = true }) {
-                    Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Profile")
-                }
-            }
-            Spacer(modifier = Modifier.height(16.dp))
-
-                // Navigation Buttons
-            Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-
+                Spacer(modifier = Modifier.height(32.dp))
                 Button(
                     onClick = {
                         onSignOut()
@@ -121,7 +101,6 @@ fun ProfileScreen(
         }
     }
 }
-
 
 // UI for Profile Text Items
 @Composable

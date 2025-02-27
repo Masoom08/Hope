@@ -102,5 +102,20 @@ dependencies {
     //implementation(files("libs/google-webrtc.aar"))
 
 
+        // Import the BoM for the Firebase platform
+        implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+    implementation("com.google.firebase:firebase-messaging")
+    
+        // Add the dependencies for the In-App Messaging and Analytics libraries
+        // When using the BoM, you don't specify versions in Firebase library dependencies
+        implementation("com.google.firebase:firebase-inappmessaging-display")
+        implementation("com.google.firebase:firebase-analytics")
+
+
+
+
+
+
+
     implementation ("androidx.compose.ui:ui:1.6.1")
 }
