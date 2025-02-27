@@ -45,7 +45,6 @@ import st.masoom.hope.Job.presentation.sign_in.SignInViewModel
 import st.masoom.hope.ui.theme.HopeTheme
 import android.Manifest
 
-
 class MainActivity : ComponentActivity() {
 
     private val googleAuthUiClient by lazy {
@@ -257,4 +256,3 @@ class MainActivity : ComponentActivity() {
             }
     }
 }
-
