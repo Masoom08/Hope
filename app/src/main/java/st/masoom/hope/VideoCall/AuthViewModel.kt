@@ -1,9 +1,10 @@
-package st.masoom.hope
+package st.masoom.hope.VideoCall
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 
 class AuthViewModel : ViewModel() {
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
@@ -35,10 +36,25 @@ class AuthViewModel : ViewModel() {
                 if (task.isSuccessful){
                     _authState.value = AuthState.Authenticated
                 }else{
-                    _authState.value = AuthState.Error(task.exception?.message?:"Something went wrong")
+                    _authState.value =
+                        AuthState.Error(task.exception?.message ?: "Something went wrong")
                 }
             }
     }
+
+    fun loginWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    _authState.value = AuthState.Authenticated
+                } else {
+                    _authState.value =
+                        AuthState.Error(task.exception?.message ?: "Google Sign-In Failed")
+                }
+            }
+    }
+
 
     fun signup( email: String , password : String){
 
@@ -53,7 +69,8 @@ class AuthViewModel : ViewModel() {
                 if (task.isSuccessful){
                     _authState.value = AuthState.Authenticated
                 }else{
-                    _authState.value = AuthState.Error(task.exception?.message?:"Something went wrong")
+                    _authState.value =
+                        AuthState.Error(task.exception?.message ?: "Something went wrong")
                 }
             }
     }
@@ -61,7 +78,8 @@ class AuthViewModel : ViewModel() {
     fun signout() {
 
         auth.signOut()
-        _authState.value =AuthState.Unauthenticated    }
+        _authState.value = AuthState.Unauthenticated
+    }
 
 }
 sealed class AuthState{

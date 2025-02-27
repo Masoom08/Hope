@@ -1,4 +1,4 @@
-package st.masoom.hope.Swipe
+package st.masoom.hope.VideoCall.Swipe
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api

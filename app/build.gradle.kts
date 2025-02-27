@@ -52,6 +52,10 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.firebase.auth)
+    implementation(libs.play.services.fido)
+    implementation(libs.androidx.espresso.core)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.messaging)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -60,9 +64,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.navigation:navigation-compose:2.8.4")
+
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.7")
+
     implementation("androidx.compose.runtime:runtime-livedata:1.7.5") // For using LiveData with Compose
     implementation("com.google.android.gms:play-services-location:21.3.0")
     implementation("com.google.android.gms:play-services-maps:19.0.0")
@@ -71,12 +77,45 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:21.2.0")
     implementation("com.google.android.gms:play-services-safetynet:18.1.0")
 
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+
+    // Identity Services (Required for One Tap Sign-In)
+    implementation ("com.google.android.gms:play-services-identity:18.0.1")
+
+    implementation("io.coil-kt:coil-compose:2.5.0")
+
+    implementation("com.google.firebase:firebase-auth-ktx:22.3.1")
+
+    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
+    implementation("androidx.activity:activity-compose:1.8.2") // Required for file picking
+    /*
+    implementation("com.google.firebase:firebase-firestore-ktx:24.10.0"){
+        exclude(group = "com.google.firebase", module = "firebase-common")
+    }
+
+     */
+
     //implementation("org.webrtc:google-webrtc:1.0.+")
     //implementation("io.github.piasy:WebRTC:69.1.2")
     //implementation(files("libs/google-webrtc.aar"))
 
-    implementation ("androidx.activity:activity-compose:1.7.2")
+
+        // Import the BoM for the Firebase platform
+        implementation(platform("com.google.firebase:firebase-bom:33.9.0"))
+    implementation("com.google.firebase:firebase-messaging")
+    
+        // Add the dependencies for the In-App Messaging and Analytics libraries
+        // When using the BoM, you don't specify versions in Firebase library dependencies
+        implementation("com.google.firebase:firebase-inappmessaging-display")
+        implementation("com.google.firebase:firebase-analytics")
+
+
+
+
+
+
+
     implementation ("androidx.compose.ui:ui:1.6.1")
-    implementation ("androidx.compose.ui:ui-tooling-preview:1.6.1")
-    implementation ("androidx.compose.material3:material3:1.1.0")
 }
