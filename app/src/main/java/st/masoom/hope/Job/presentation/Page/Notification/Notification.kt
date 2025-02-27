@@ -62,7 +62,7 @@ fun sendNotificationToUser(userToken: String, jobTitle: String) {
         )
     )
 
-    val serverKey = "a764b0420dec11b1b22cb38b6b9422e06f8aae3e" // Load this from a secure source
+    val serverKey = "SERVER_KEY" // Load this from a secure source
 
     service.sendNotification(notification, serverKey).enqueue(object : Callback<Void> {
         override fun onResponse(call: Call<Void>, response: Response<Void>) {
